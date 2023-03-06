@@ -1,0 +1,65 @@
+[gd_scene load_steps=8 format=3 uid="uid://c1wpbwvrehqa3"]
+
+[ext_resource type="PackedScene" uid="uid://bi3xtk0eakre6" path="res://Player.tscn" id="1_evp81"]
+[ext_resource type="Script" path="res://CameraController.cs" id="2_47tqn"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ljgaf"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_cr84w"]
+sky_material = SubResource("ProceduralSkyMaterial_ljgaf")
+
+[sub_resource type="Environment" id="Environment_4x5x7"]
+background_mode = 2
+sky = SubResource("Sky_cr84w")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_a4p8t"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jnmvx"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_4x5x7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(15.695, 0, 0, 0, 0.0510045, 0, 0, 0, 15.806, 0, 0, 0)
+mesh = SubResource("BoxMesh_a4p8t")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("BoxShape3D_jnmvx")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.199, 0, 0, 0, 2.351, 0, 0, 0, 7.63, -4.22028, 1.17151, 0)
+mesh = SubResource("BoxMesh_a4p8t")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D2"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D"]
+shape = SubResource("BoxShape3D_jnmvx")
+
+[node name="Character" parent="." instance=ExtResource("1_evp81")]
+
+[node name="Camera Controller" type="Node3D" parent="." groups=["CameraController"]]
+script = ExtResource("2_47tqn")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Camera Controller"]
+spring_length = 5.0
+
+[node name="Camera3D" type="Camera3D" parent="Camera Controller/SpringArm3D"]
+
+[node name="LookAt" type="Node3D" parent="Camera Controller"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8157, -11.2335)
